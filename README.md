@@ -100,6 +100,6 @@ The comparison is byte for byte. See [Validation](docs/VALIDATION.md) for datase
 
 ## License and attribution
 
-Licensed under GPL-3.0-or-later. See [COPYING](COPYING).
+Licensed under GPL-3.0-or-later. See [LICENSE](LICENSE).
 
 The underlying ALT post-processing algorithm originates in Heng Li's [BWA/bwakit](https://github.com/lh3/bwa) project. This is a separate Rust implementation and is not an official BWA release.

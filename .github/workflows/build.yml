@@ -1,0 +1,38 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Unit tests
+        run: cargo test --offline
+      - name: Release build
+        run: cargo build --release --offline
+
+  linux-static:
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+      - name: Install musl tools
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+      - name: Build Linux x86-64 binary
+        run: cargo build --release --offline --target x86_64-unknown-linux-musl
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: postalt-rs-linux-x86_64-musl
+          path: target/x86_64-unknown-linux-musl/release/postalt-rs
